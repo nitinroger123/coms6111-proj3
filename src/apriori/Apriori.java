@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import valueObjects.LargeItemSetVO;
+
 public class Apriori {
 	/*Hold the resultant large itemset */
 	Set<Set<String>> largeItemSet;
@@ -40,11 +42,12 @@ public class Apriori {
 	}
 	
 	public void printLargeItemSet() {
-		for (Set<String> set: largeItemSet) {
-			for(String s: set) {
-				System.out.print(s+", ");
+		for(LargeItemSetVO vo: DataHelper.getLargeItemSetWithSupport()) {
+			System.out.print("[ ");
+			for(String s: vo.getItems()) {
+				System.out.print(s+ ",");
 			}
-			System.out.println();
+			System.out.println(" ]  Support is " + vo.getSupport()*100 + "%");
 		}
 	}
 	

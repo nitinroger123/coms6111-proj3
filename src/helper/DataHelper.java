@@ -4,17 +4,20 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import valueObjects.LargeItemSetVO;
 
 public class DataHelper {
 	private static HashMap<String, Integer> frequencyMap;
 	private static Integer numberOfTransactions;
 	private static Double minSupport;
 	private static Double minConfidecne;
+	private static Set<LargeItemSetVO> largeItemSetWithSupport;
 	
 	public static void init(Double sup, Double conf) {
 		frequencyMap = new HashMap<String, Integer>();
 		minSupport = sup;
 		minConfidecne = conf;
+		largeItemSetWithSupport = new HashSet<LargeItemSetVO>();
 	}
 	
 	/**
@@ -45,6 +48,7 @@ public class DataHelper {
 				item = new HashSet<String>();
 				item.add(s);
 				LOneSet.add(item);
+				largeItemSetWithSupport.add(new LargeItemSetVO(item, currSuport));
 			}
 		}
 		return LOneSet;
@@ -60,6 +64,13 @@ public class DataHelper {
 		return frequentSets;
 	}
 	
+	/**
+	 * Checks if it is frequent and puts it onto the 
+	 * LargeItemSetWithSupport Set. 
+	 * @param fileMap
+	 * @param set
+	 * @return
+	 */
 	private static boolean checkSetIsFrequent(Map<Integer, Set<String>> fileMap, Set<String> set) {
 		Integer count = 0;
 		for (Integer key: fileMap.keySet()) {
@@ -67,8 +78,10 @@ public class DataHelper {
 			if (row.containsAll(set))
 				++count;
 		}
-		if ( ( count.doubleValue() / numberOfTransactions.doubleValue() ) >= minSupport)
+		if ( ( count.doubleValue() / numberOfTransactions.doubleValue() ) >= minSupport) {
+			largeItemSetWithSupport.add(new LargeItemSetVO(set, count.doubleValue() / numberOfTransactions.doubleValue()));
 			return true;
+		}
 		return false;
 	}
 
@@ -82,5 +95,9 @@ public class DataHelper {
 	
 	public static Integer getNumTransactions() {
 		return numberOfTransactions;
+	}
+	
+	public static Set<LargeItemSetVO> getLargeItemSetWithSupport() {
+		return largeItemSetWithSupport;
 	}
 }
