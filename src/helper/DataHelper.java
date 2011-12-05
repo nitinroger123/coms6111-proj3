@@ -2,6 +2,7 @@ package helper;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class DataHelper {
@@ -49,6 +50,28 @@ public class DataHelper {
 		return LOneSet;
 	}
 	
+	public static Set<Set<String>> getFrequentItems(Set<Set<String>> allCurrentItemSets, Map<Integer, Set<String>> fileMap) {
+		Set<Set<String>> frequentSets = new HashSet<Set<String>>();
+		for (Set<String> set: allCurrentItemSets) {
+			if (checkSetIsFrequent(fileMap, set)) {
+				frequentSets.add(set);
+			}
+		}
+		return frequentSets;
+	}
+	
+	private static boolean checkSetIsFrequent(Map<Integer, Set<String>> fileMap, Set<String> set) {
+		Integer count = 0;
+		for (Integer key: fileMap.keySet()) {
+			Set<String> row = fileMap.get(key);
+			if (row.containsAll(set))
+				++count;
+		}
+		if ( ( count.doubleValue() / numberOfTransactions.doubleValue() ) >= minSupport)
+			return true;
+		return false;
+	}
+
 	public static HashMap<String, Integer> getFrequencyMap() {
 		return frequencyMap;
 	}
