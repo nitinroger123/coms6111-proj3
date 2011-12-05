@@ -31,7 +31,11 @@ public class Apriori {
 	 */
 	public void doApriori(Double minSupport, Double minConfidence, String filename) throws IOException {
 		fileMap = FileHelper.parseFile(filename);
-		largeItemSet.addAll(DataHelper.getLOneSet());
+		currentItemSet = DataHelper.getLOneSet();
+		largeItemSet.addAll(currentItemSet);
+		while(currentItemSet.size() > 0) {
+			currentItemSet = getNextLevelItemSet(currentItemSet);
+		}
 		printLargeItemSet();
 	}
 	
@@ -43,4 +47,23 @@ public class Apriori {
 			System.out.println();
 		}
 	}
+	
+	public Set<Set<String>> getNextLevelItemSet(Set<Set<String>> curItemSet){
+		Set<Set<String>> cloneSet = new HashSet<Set<String>>(curItemSet);
+		Set<Set<String>> nextLevel = new HashSet<Set<String>>();
+		
+		for(Set<String> set : curItemSet) {
+			for(Set<String> set1 : cloneSet){
+				if (!set.equals(set1)) {
+					Set<String> toAdd = new HashSet<String>(set);
+					toAdd.addAll(set1);
+					nextLevel.add(toAdd);
+				}
+			}
+		}
+		nextLevel = DataHelper.getFrequentItems(nextLevel, fileMap);
+		largeItemSet.addAll(nextLevel);
+		return nextLevel;
+	}
+	
 }
