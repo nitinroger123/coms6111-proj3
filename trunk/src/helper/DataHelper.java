@@ -84,6 +84,15 @@ public class DataHelper {
 		}
 		return false;
 	}
+	
+	public static Double getSupport(Set<String> s) {
+		for (LargeItemSetVO vo : largeItemSetWithSupport) {
+			if (vo.getItems().equals(s)) {
+				return vo.getSupport();
+			}
+		}
+		return null;
+	}
 
 	public static HashMap<String, Integer> getFrequencyMap() {
 		return frequencyMap;

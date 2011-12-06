@@ -2,7 +2,7 @@ package valueObjects;
 
 import java.util.Set;
 
-public class LargeItemSetVO {
+public class LargeItemSetVO implements Comparable<LargeItemSetVO>{
 	
 	private Set<String> items;
 	private Double support;
@@ -61,6 +61,14 @@ public class LargeItemSetVO {
 			return false;
 		return true;
 	}
+
+	@Override
+	public int compareTo(LargeItemSetVO other) {
+		if (this.support < other.support)
+			return 1;
+		return 0;
+	}
+	
 	
 	
 
