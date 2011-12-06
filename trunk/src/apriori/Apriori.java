@@ -42,11 +42,16 @@ public class Apriori {
 	 */
 	public void doApriori(Double minSupport, Double minConfidence, String filename) throws IOException {
 		fileMap = FileHelper.parseFile(filename);
+		System.out.println("All transcastions loded into memory. \n");
 		currentItemSet = DataHelper.getLOneSet();
+		System.out.println("Computed L0 ItemSet");
 		largeItemSet.addAll(currentItemSet);
+		int count = 0;
 		while(currentItemSet.size() > 0) {
+			System.out.println("Computed L"+ ++count +" ItemSet");
 			currentItemSet = getNextLevelItemSet(currentItemSet);
 		}
+		System.out.println();
 		System.out.println("==Large itemsets ( min_support="+ minSupport*100 + "% )");
 		printLargeItemSet();
 		System.out.println();

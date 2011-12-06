@@ -20,8 +20,8 @@ public class Main {
 		 * Test code. Remove and uncomment above
 		 */
 		
-		String filename = "INTEGRATED-DATASET.csv";
-		Double minSupport = 0.1;
+		String filename = "INTEGRATED-DATASET-1.csv";
+		Double minSupport = 0.2;
 		Double minConfidence = 0.6;
 		DataHelper.init(minSupport, minConfidence);
 		Apriori aprioriHelper = new Apriori();
