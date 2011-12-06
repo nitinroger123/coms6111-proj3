@@ -9,18 +9,25 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import valueObjects.AssociationObject;
+import valueObjects.AssociationValueObject;
 import valueObjects.LargeItemSetVO;
 
+/**
+ * 
+ * @author nitin kanna
+ * The apriori algo class
+ *
+ */
 public class Apriori {
 	/*Hold the resultant large itemset */
 	Set<Set<String>> largeItemSet;
 	Set<Set<String>> currentItemSet;
-	
 	/*Maps the file into memory */
 	Map<Integer, Set<String>> fileMap;
 	
+	/**
+	 * The public constructor
+	 */
 	public Apriori() {
 		largeItemSet = new HashSet<Set<String>>();
 		fileMap = new HashMap<Integer, Set<String>>();
@@ -51,7 +58,7 @@ public class Apriori {
 	 * private method to generate association rules
 	 */
 	private void generateAssociationRules(Double minConfidence) {
-		ArrayList<AssociationObject> associations = new ArrayList<AssociationObject>();
+		ArrayList<AssociationValueObject> associations = new ArrayList<AssociationValueObject>();
 		ArrayList<LargeItemSetVO> set = new ArrayList<LargeItemSetVO>(DataHelper.getLargeItemSetWithSupport());
 		for(LargeItemSetVO vo: set) {
 			/* Get one item on the rhs */
@@ -60,11 +67,10 @@ public class Apriori {
 				for (LargeItemSetVO other : set) {
 					if (other.getItems().contains(item) && other.getItems().size() > 1) {
 						/*Propose an association if > than confidence*/
-						
 						Set<String> toOutput = new HashSet<String>(other.getItems());
 						toOutput.remove(item);
 						if ((other.getSupport().doubleValue() / DataHelper.getSupport(toOutput).doubleValue()) >= minConfidence) {
-							associations.add(new AssociationObject(toOutput, vo.getItems(), (other.getSupport().doubleValue() / DataHelper.getSupport(toOutput).doubleValue()), other.getSupport()));
+							associations.add(new AssociationValueObject(toOutput, vo.getItems(), (other.getSupport().doubleValue() / DataHelper.getSupport(toOutput).doubleValue()), other.getSupport()));
 						}
 					}
 				}
@@ -74,12 +80,19 @@ public class Apriori {
 		printAssociations(associations);
 	}
 	
-	private void printAssociations(ArrayList<AssociationObject> associations) {
-		for (AssociationObject obj: associations) {
+	/**
+	 * Print the associations
+	 * @param associations
+	 */
+	private void printAssociations(ArrayList<AssociationValueObject> associations) {
+		for (AssociationValueObject obj: associations) {
 			System.out.println(obj.getLhs() + " => "+ obj.getRhs() + " (conf:"+obj.getConfidence()*100+ "% supp:" + obj.getSupport()*100+ "% )");
 		}
 	}
 
+	/**
+	 * Print the Large itemsets
+	 */
 	public void printLargeItemSet() {
 		ArrayList<LargeItemSetVO> set = new ArrayList<LargeItemSetVO>(DataHelper.getLargeItemSetWithSupport());
 		Collections.sort(set);
@@ -88,6 +101,11 @@ public class Apriori {
 		}
 	}
 	
+	/**
+	 * Get the next level items
+	 * @param curItemSet
+	 * @return
+	 */
 	public Set<Set<String>> getNextLevelItemSet(Set<Set<String>> curItemSet){
 		Set<Set<String>> cloneSet = new HashSet<Set<String>>(curItemSet);
 		Set<Set<String>> nextLevel = new HashSet<Set<String>>();

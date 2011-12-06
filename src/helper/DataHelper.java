@@ -6,6 +6,11 @@ import java.util.Map;
 import java.util.Set;
 import valueObjects.LargeItemSetVO;
 
+/**
+ * Helper class to handle all data related activities 
+ * @author nitin kanna
+ *
+ */
 public class DataHelper {
 	private static HashMap<String, Integer> frequencyMap;
 	private static Integer numberOfTransactions;
@@ -54,6 +59,12 @@ public class DataHelper {
 		return LOneSet;
 	}
 	
+	/**
+	 * Get the frequent items
+	 * @param allCurrentItemSets
+	 * @param fileMap
+	 * @return
+	 */
 	public static Set<Set<String>> getFrequentItems(Set<Set<String>> allCurrentItemSets, Map<Integer, Set<String>> fileMap) {
 		Set<Set<String>> frequentSets = new HashSet<Set<String>>();
 		for (Set<String> set: allCurrentItemSets) {

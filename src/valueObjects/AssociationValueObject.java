@@ -2,13 +2,25 @@ package valueObjects;
 
 import java.util.Set;
 
-public class AssociationObject implements Comparable<AssociationObject>{
+/**
+ * The Association value object
+ * @author nitin kanna
+ *
+ */
+public class AssociationValueObject implements Comparable<AssociationValueObject>{
 	private Set<String> lhs;
 	private Set<String> rhs;
 	private Double confidence;
 	private Double support;
 	
-	public AssociationObject(Set<String> lhs, Set<String> rhs,
+	/**
+	 * The public constructor
+	 * @param lhs
+	 * @param rhs
+	 * @param confidence
+	 * @param support
+	 */
+	public AssociationValueObject(Set<String> lhs, Set<String> rhs,
 			Double confidence, Double support) {
 		this.setLhs(lhs);
 		this.setRhs(rhs);
@@ -17,7 +29,7 @@ public class AssociationObject implements Comparable<AssociationObject>{
 	}
 
 	@Override
-	public int compareTo(AssociationObject o) {
+	public int compareTo(AssociationValueObject o) {
 		if (this.confidence < o.confidence)
 			return 1;
 		return 0;

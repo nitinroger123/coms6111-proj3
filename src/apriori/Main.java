@@ -4,6 +4,11 @@ import helper.DataHelper;
 
 import java.io.IOException;
 
+/**
+ * The Main class where everything starts
+ * @author nitin kanna
+ *
+ */
 public class Main {
 	public static void main(String args[]) {
 		/**

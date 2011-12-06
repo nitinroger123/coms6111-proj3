@@ -2,6 +2,11 @@ package valueObjects;
 
 import java.util.Set;
 
+/**
+ * The Value Object to hold the Large Itemset
+ * @author nitin kanna
+ *
+ */
 public class LargeItemSetVO implements Comparable<LargeItemSetVO>{
 	
 	private Set<String> items;
