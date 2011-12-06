@@ -29,6 +29,9 @@ public class FileHelper {
 		Integer lineCount = 0;
 		while((input = reader.readLine()) != null) {
 			++lineCount;
+			if(lineCount % 1000 == 0){
+				System.out.println("Loaded " + lineCount + " transcations into memory. ");
+			}
 			lineSet = new HashSet<String>();
 			String temp [] = input.split(",");
 			int i = 0;
@@ -38,7 +41,10 @@ public class FileHelper {
 			 * the frequencyMap using the DataHelper 
 			 */
 			while (i < temp.length) {
-				
+				if(temp[i].length() == 0) { 
+					i++;
+					continue;
+				}
 				lineSet.add(temp[i]);
 				DataHelper.updateFrequency(temp[i]);
 				i++;
