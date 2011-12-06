@@ -2,16 +2,15 @@ package apriori;
 
 import helper.DataHelper;
 import helper.FileHelper;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import valueObjects.AssociationObject;
 import valueObjects.LargeItemSetVO;
 
 public class Apriori {
@@ -41,9 +40,10 @@ public class Apriori {
 		while(currentItemSet.size() > 0) {
 			currentItemSet = getNextLevelItemSet(currentItemSet);
 		}
+		System.out.println("==Large itemsets ( min_support="+ minSupport*100 + "% )");
 		printLargeItemSet();
 		System.out.println();
-		System.out.println("* High Confidence association rules *");
+		System.out.println("==High-confidence association rules"+ "( min_conf="+minConfidence*100 + "% )");
 		generateAssociationRules(minConfidence);
 	}
 	
@@ -51,6 +51,7 @@ public class Apriori {
 	 * private method to generate association rules
 	 */
 	private void generateAssociationRules(Double minConfidence) {
+		ArrayList<AssociationObject> associations = new ArrayList<AssociationObject>();
 		ArrayList<LargeItemSetVO> set = new ArrayList<LargeItemSetVO>(DataHelper.getLargeItemSetWithSupport());
 		for(LargeItemSetVO vo: set) {
 			/* Get one item on the rhs */
@@ -63,13 +64,20 @@ public class Apriori {
 						Set<String> toOutput = new HashSet<String>(other.getItems());
 						toOutput.remove(item);
 						if ((other.getSupport().doubleValue() / DataHelper.getSupport(toOutput).doubleValue()) >= minConfidence) {
-							System.out.println(toOutput + "=>" + item + "conf " + (other.getSupport().doubleValue() / DataHelper.getSupport(toOutput).doubleValue()) + "% " + "support "+ other.getSupport());
+							associations.add(new AssociationObject(toOutput, vo.getItems(), (other.getSupport().doubleValue() / DataHelper.getSupport(toOutput).doubleValue()), other.getSupport()));
 						}
 					}
 				}
 			}
 		}
-		
+		Collections.sort(associations);
+		printAssociations(associations);
+	}
+	
+	private void printAssociations(ArrayList<AssociationObject> associations) {
+		for (AssociationObject obj: associations) {
+			System.out.println(obj.getLhs() + " => "+ obj.getRhs() + " (conf:"+obj.getConfidence()*100+ "% supp:" + obj.getSupport()*100+ "% )");
+		}
 	}
 
 	public void printLargeItemSet() {
